@@ -12,7 +12,6 @@ const AppRouter = () => {
         <div className="flex-1 overflow-auto p-4 bg-gray-50">
           <Routes>
             <Route path="/register-patient" element={<PatientForm />} />
-            <Route path="/patients" element={<PatientListing />} />
             <Route path="/" element={<PatientListing />} />
             <Route path="/patients/query" element={<QueryInterface />} />
           </Routes>

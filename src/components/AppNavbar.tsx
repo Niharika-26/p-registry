@@ -13,7 +13,7 @@ export function AppNavbar() {
     },
     {
       label: "View Patients",
-      href: "/patients",
+      href: "/",
       icon: IconUsersGroup,
     },
   ];
@@ -30,7 +30,7 @@ export function AppNavbar() {
           const Icon = item.icon;
           const isActive =
             location.pathname === item.href ||
-            (item.href === "/patients" && location.pathname === "/");
+            (item.href === "/" && location.pathname === "/");
 
           return (
             <NavLink

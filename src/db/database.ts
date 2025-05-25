@@ -17,7 +17,7 @@ async function ensureDatabaseInitialized() {
     pg = await PGliteWorker.create(workerInstance, {
       dataDir: "idb://pRegistry",
     });
-
+    await pg.waitReady;
     if (typeof BroadcastChannel !== "undefined") {
       syncChannel = new BroadcastChannel("pRegistry-sync");
       syncChannel.onmessage = (event) => {
@@ -71,32 +71,6 @@ function isWriteOperation(sql: string): boolean {
   ].includes(firstWord);
 }
 
-export async function initializeDatabase() {
-  const db = await ensureDatabaseInitialized();
-  if (!db) throw new Error("Database not initialized");
-
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS patients (
-      id uuid PRIMARY KEY,
-      first_name TEXT NOT NULL,
-      last_name TEXT NOT NULL,
-      dob DATE NOT NULL,
-      gender TEXT NOT NULL,
-      blood_group TEXT,
-      city TEXT NOT NULL,
-      state TEXT NOT NULL,
-      country TEXT NOT NULL,
-      address TEXT NOT NULL,
-      phone TEXT,
-      email TEXT,
-      insurance TEXT,
-      policy_number TEXT,
-      medical_history TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-}
-
 export async function addPatient(patient: {
   firstName: string;
   lastName: string;
@@ -114,7 +88,8 @@ export async function addPatient(patient: {
   medicalHistory?: string;
 }): Promise<string> {
   const id = crypto.randomUUID();
-  await executeQuery(
+  console.log("patient", patient);
+  const result = await executeQuery(
     `INSERT INTO patients (
       id, first_name, last_name, dob, gender, blood_group,city,state,country,
       address, phone, email, insurance, policy_number, medical_history
@@ -137,6 +112,7 @@ export async function addPatient(patient: {
       patient.medicalHistory || null,
     ]
   );
+  console.log("result after inserting", result);
   return id;
 }
 

@@ -29,15 +29,6 @@ worker({
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `)
-    
-    if (typeof BroadcastChannel !== 'undefined') {
-      const syncChannel = new BroadcastChannel('pRegistry-sync')
-      syncChannel.addEventListener('message', async (event) => {
-        if (event.data.type === 'invalidate') {
-          await db.query('DISCARD ALL')
-        }
-      })
-    }
 
     return db
   }

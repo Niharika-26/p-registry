@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   getPatients,
-  subscribeToUpdates,
-  initializeDatabase,
+  subscribeToUpdates
 } from "@/db/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -145,8 +144,8 @@ const PatientList = () => {
     try {
       setLoading(true);
       setError(null);
-      await initializeDatabase();
       const result = await getPatients();
+      console.log('result',result)
       setPatients(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load patients");
@@ -158,6 +157,7 @@ const PatientList = () => {
   useEffect(() => {
     loadPatients();
     const unsubscribe = subscribeToUpdates(() => {
+      console.log('load patients')
       loadPatients();
     });
     return () => unsubscribe();

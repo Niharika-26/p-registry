@@ -101,7 +101,7 @@ const QueryInterface = () => {
         <h2 className="text-2xl font-semibold">Patient Query Interface</h2>
         <Button
           variant="outline"
-          onClick={() => navigate("/patients")}
+          onClick={() => navigate("/")}
           className="w-40 bg-[#393D9D] hover:bg-[#2f3488] text-white"
         >
           Back to Patient List

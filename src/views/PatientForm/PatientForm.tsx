@@ -22,8 +22,13 @@ const validationSchema = Yup.object({
   city: Yup.string().max(50).required("Required"),
   state: Yup.string().max(50).required("Required"),
   country: Yup.string().max(50).required("Required"),
-  phone: Yup.string().max(20).required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
+  phone: Yup.string()
+    .matches(
+      /^(\+?\d{1,4}[-.\s]?)?(\(?\d{2,4}\)?[-.\s]?)?[\d\-.\s]{6,14}$/,
+      "Invalid phone number"
+    )
+    .required("Required"),
+  email: Yup.string(),
   insurance: Yup.string().max(50),
   policyNumber: Yup.string().max(50),
   medicalHistory: Yup.string().max(500),
@@ -39,7 +44,7 @@ const PatientForm = () => {
     try {
       await addPatient(values);
       toast.success("Patient registered successfully!");
-      navigate("/patients");
+      navigate("/");
     } catch (error) {
       toast.error(
         `Failed to register patient: ${
@@ -222,7 +227,7 @@ const PatientForm = () => {
             type="button"
             variant="outline"
             className="flex-1"
-            onClick={() => navigate("/patients")}
+            onClick={() => navigate("/")}
           >
             Cancel
           </Button>
